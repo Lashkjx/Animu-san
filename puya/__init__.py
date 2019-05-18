@@ -1,7 +1,11 @@
 from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
 from pages.PuyaSubs import puya
+from pages.Spreadsheet import *
 import os
 import sys
 
@@ -25,9 +29,12 @@ def initializeDriver(url):
 print("       - Welcome Senpai! to ANIMU-SAN v.1.0.0 - \n")
 
 driver = initializeDriver('http://www.puya.si')
-match = puya(driver, 'Joshi Kausei','Monster Strike – The Animation – 39')
-if not match:
-    print("No match!")
+animeEntries = animeEntriesGS()
+animeStop = animeStopGS()
+for anime in animeEntries:
+    print("Title: " + anime)
+    print("Stop: " + animeStop)
+    driver = puya(driver, anime, animeStop)
 closeDriver(driver)
 
 
