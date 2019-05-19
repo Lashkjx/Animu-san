@@ -1,5 +1,6 @@
 /puya/chromedriver.exe
 /puya/pages/my_credential.json
+/resources/notify-run
 /venv
 /.idea
 
