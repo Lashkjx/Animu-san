@@ -1,8 +1,11 @@
 from notify_run import Notify
 
 notify = Notify()
-notify.endpoint('https://notify.run/2F87xZFS1t7nXTXh')
+notify.read_config()
 
-notify.send("Test")
-#
-# notify.urlparse('https://notify.run/2F87xZFS1t7nXTXh')
+def pushNotification(msg):
+    notify.send('Kanan-chan! A new episode available: ' + msg)
+
+def pushSadNotification(msg):
+    notify.send(msg)
+

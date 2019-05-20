@@ -1,4 +1,5 @@
 /puya/chromedriver.exe
+/puya/geckodriver.exe
 /puya/pages/my_credential.json
 /resources/notify-run
 /venv

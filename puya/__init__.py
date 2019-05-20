@@ -6,6 +6,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from pages.PuyaSubs import puya
 from pages.Spreadsheet import *
+from resources.Notifications import *
 import os
 import sys
 
@@ -20,7 +21,7 @@ def closeDriver(driver):
 
 def initializeDriver(url):
     chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument("--disable-infobars")
+    chrome_options.add_argument("--headless")
     chromeDriver = webdriver.Chrome(executable_path='chromedriver.exe',chrome_options=chrome_options)
     chromeDriver.get(url)
     return chromeDriver
@@ -32,8 +33,6 @@ driver = initializeDriver('http://www.puya.si')
 animeEntries = animeEntriesGS()
 animeStop = animeStopGS()
 for anime in animeEntries:
-    print("Title: " + anime)
-    print("Stop: " + animeStop)
     driver = puya(driver, anime, animeStop)
 closeDriver(driver)
 

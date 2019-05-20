@@ -4,6 +4,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
+from resources.Notifications import *
 import os
 import sys
 
@@ -31,16 +32,19 @@ def puya(driver, pattern, stop):
                     driver.refresh()
                     myElem = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'h3:nth-child(1)')))
                     resolutionTitle = driver.find_element_by_css_selector("h3:nth-child(1)")
-                    torrentButton = driver.find_element_by_css_selector("a.btn.btn-default:nth-child(1)")
+                    torrentButton = driver.find_element_by_css_selector("a.btn.btn-default:nth-child(2)")
                     refresh = True
             if '[720p]' in resolutionTitle.text:
                 torrentButton.click()
+                # pushNotification(title.text)
                 driver.get('http://www.puya.si')
             else:
                 print('Wrong resolution')
             return driver
         elif title.text == stop:
-            print("Sorry senpai, no match today")
+            sadNotification = "Sorry senpai, no match today for: " + pattern
+            # pushSadNotification(sadNotification)
+            print(sadNotification)
             return driver
             break
 
