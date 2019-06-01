@@ -1,7 +1,9 @@
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
-from UI.PuyaSubs import puya
+from UI.PuyaSubs import puyaUI
+from Rss.PuyaSubs import puyaRSS
 from pages.Spreadsheet import *
+from datetime import datetime, timedelta
 import os
 
 
@@ -29,12 +31,20 @@ def initialize(browser,url):
 
 print("       - Welcome Senpai! to ANIMU-SAN v.1.0.0 - \n")
 
-driver = initialize("firefox", 'http://www.puya.moe')
+# driver = initialize("firefox", 'http://www.puya.moe')
+# animeEntries = animeEntriesGS()
+# animeStop = animeStopGS()
+# for anime in animeEntries:
+#     driver = puyaUI(driver, anime, animeStop)
+# closeDriver(driver)
+
 animeEntries = animeEntriesGS()
-animeStop = animeStopGS()
+animeTime = getAnimeTime()
 for anime in animeEntries:
-    driver = puya(driver, anime, animeStop)
-closeDriver(driver)
+    puyaRSS(anime, animeTime)
+print("hola")
+
+
 
 
 

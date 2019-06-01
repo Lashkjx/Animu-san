@@ -9,7 +9,7 @@ import os
 import time
 import sys
 
-def puya(driver, pattern, stop):
+def puyaUI(driver, pattern, stop):
     animeArticle = driver.find_elements_by_css_selector("article")
     for anime in animeArticle:
         title = anime.find_element_by_css_selector("h2")
