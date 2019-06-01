@@ -39,10 +39,11 @@ print("       - Welcome Senpai! to ANIMU-SAN v.1.0.0 - \n")
 # closeDriver(driver)
 
 animeEntries = animeEntriesGS()
-animeTime = getAnimeTime()
+lastEntry = getLastEntry()
 for anime in animeEntries:
-    puyaRSS(anime, animeTime)
-print("hola")
+    lastEntry = puyaRSS(anime, lastEntry)
+    setLastEntry(lastEntry)
+
 
 
 
