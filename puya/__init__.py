@@ -29,33 +29,19 @@ def initialize(browser,url):
         firefoxDriver.get(url)
         return firefoxDriver
 
-print("       - Welcome Senpai! to ANIMU-SAN v.1.0.0 - \n")
 
-# driver = initialize("firefox", 'http://www.puya.moe')
-# animeEntries = animeEntriesGS()
-# animeStop = animeStopGS()
-# for anime in animeEntries:
-#     driver = puyaUI(driver, anime, animeStop)
-# closeDriver(driver)
+def executeUI():
+    driver = initialize("firefox", 'http://www.puya.moe')
+    animeEntries = animeEntriesGS()
+    animeStop = animeStopGS()
+    for anime in animeEntries:
+        driver = puyaUI(driver, anime, animeStop)
+    closeDriver(driver)
+
+print("       - Welcome Senpai! to ANIMU-SAN v.1.0.0 - \n")
 
 animeEntries = animeEntriesGS()
 lastEntry = getLastEntry()
 for anime in animeEntries:
     lastEntry = puyaRSS(anime, lastEntry)
     setLastEntry(lastEntry)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
