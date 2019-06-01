@@ -4,5 +4,9 @@
 /resources/notify-run
 /venv
 /.idea
-
+/puya/__pycache__/
+/puya/geckodriver.log
+/puya/pages/__pycache__/
+/puya/resources/__pycache__/
+/puya/resources/notify-run
 
