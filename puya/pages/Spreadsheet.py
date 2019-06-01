@@ -25,6 +25,11 @@ def animeEntriesGS():
 def animeStopGS():
     return sheet.cell(2, 2).value
 
+def getLastEntry():
+    return sheet.cell(3,2).value
+
+def setLastEntry(entry):
+    sheet.update_cell(3,2,entry)
 
 
 

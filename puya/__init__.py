@@ -1,15 +1,10 @@
 from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-from pages.PuyaSubs import puya
+from UI.PuyaSubs import puyaUI
+from Rss.PuyaSubs import puyaRSS
 from pages.Spreadsheet import *
-from resources.Notifications import *
+from datetime import datetime, timedelta
 import os
-import sys
 
 
 def clean():
@@ -36,12 +31,21 @@ def initialize(browser,url):
 
 print("       - Welcome Senpai! to ANIMU-SAN v.1.0.0 - \n")
 
-driver = initialize("firefox", 'http://www.puya.moe')
+# driver = initialize("firefox", 'http://www.puya.moe')
+# animeEntries = animeEntriesGS()
+# animeStop = animeStopGS()
+# for anime in animeEntries:
+#     driver = puyaUI(driver, anime, animeStop)
+# closeDriver(driver)
+
 animeEntries = animeEntriesGS()
-animeStop = animeStopGS()
+lastEntry = getLastEntry()
 for anime in animeEntries:
-    driver = puya(driver, anime, animeStop)
-closeDriver(driver)
+    lastEntry = puyaRSS(anime, lastEntry)
+    setLastEntry(lastEntry)
+
+
+
 
 
 
