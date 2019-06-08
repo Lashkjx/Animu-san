@@ -38,10 +38,16 @@ def executeUI():
         driver = puyaUI(driver, anime, animeStop)
     closeDriver(driver)
 
-print("       - Welcome Senpai! to ANIMU-SAN v.1.0.0 - \n")
+
+def executeRSS():
+    for anime in animeEntries:
+        last = puyaRSS(anime, lastEntry)
+    return last
+
+
+print("       - Welcome Senpai! to ANIMU-SAN v.1.0.1 - \n")
 
 animeEntries = animeEntriesGS()
 lastEntry = getLastEntry()
-for anime in animeEntries:
-    lastEntry = puyaRSS(anime, lastEntry)
-    setLastEntry(lastEntry)
+entry = executeRSS()
+setLastEntry(entry)
