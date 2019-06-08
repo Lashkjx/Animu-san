@@ -4,9 +4,13 @@
 /resources/notify-run
 /venv
 /.idea
+/__init__.spec
 /puya/__pycache__/
 /puya/geckodriver.log
 /puya/pages/__pycache__/
 /puya/resources/__pycache__/
 /puya/resources/notify-run
+/puya/resources/API/Credentials.ini
+/puya/resources/API/outfile.json
+
 
