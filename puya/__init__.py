@@ -45,12 +45,15 @@ def executeRSS():
     return last
 
 
-print("       - Welcome Senpai! to ANIMU-SAN v.1.0.1 - \n")
+print("       - Welcome Kanan-chan! to ANIMU-SAN v.1.0.1 -\n")
+# print("     - ARA ARA What I can do for you today, Kanan? -")
 
 animeEntries = animeEntriesGS()
 lastEntry = getLastEntry()
 entry = executeRSS()
 setLastEntry(entry)
+
+input("\n       - Thank you! For using me Kanan-chan! -")
 
 
 

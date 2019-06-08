@@ -7,10 +7,11 @@ def puyaRSS(anime, stop):
         if entry.title != stop:
             if (anime in entry.title) & ('720p' in entry.title):
                 magnetPrefix = "magnet:?xt=urn:btih:"
+                print("Ara ara, I found a little gift for you: " + entry.title)
                 os.startfile(magnetPrefix + entry.nyaa_infohash)
                 break
         else:
-            sadNotification = "Sorry senpai, no match today for: " + anime
+            sadNotification = "Sorry Kanan-chan, no match today for: " + anime
             print(sadNotification)
             break
     return PuyaSubs.entries[0].title
