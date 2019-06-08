@@ -15,10 +15,10 @@ def animeEntriesGS():
     animeEntries = []
     i = 2
     while data:
-        if sheet.cell(i, 1).value == '':
+        if sheet.cell(i, 2).value == '':
             data = False
         else:
-            animeEntries.append(sheet.cell(i, 1).value)
+            animeEntries.append(sheet.cell(i, 2).value)
         i += 1
     return animeEntries
 
@@ -26,10 +26,10 @@ def animeStopGS():
     return sheet.cell(2, 2).value
 
 def getLastEntry():
-    return sheet.cell(3,2).value
+    return sheet.cell(3,1).value
 
 def setLastEntry(entry):
-    sheet.update_cell(3,2,entry)
+    sheet.update_cell(3,1,entry)
 
 
 
