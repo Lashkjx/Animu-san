@@ -31,6 +31,22 @@ def getLastEntry():
 def setLastEntry(entry):
     sheet.update_cell(3,1,entry)
 
+def getAnimeData(title):
+    data = True
+    animeData = []
+    i = 2
+    while data:
+        if sheet.cell(i, 2).value == title:
+            for j in range(3,6):
+                animeData.append(sheet.cell(i, j).value)
+            return animeData
+            break
+        elif(sheet.cell(i,2).value == ''):
+            data = False
+        i += 1
+
+
+
 
 
 
