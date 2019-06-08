@@ -51,3 +51,4 @@ animeEntries = animeEntriesGS()
 lastEntry = getLastEntry()
 entry = executeRSS()
 setLastEntry(entry)
+
