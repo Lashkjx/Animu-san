@@ -153,42 +153,43 @@ def getCards(key, token):
     if resp.status_code != 200:
         print('[Error] Card retrival error: {}'.format(resp.status_code))
     else:
+        type = 'TV'
+        status = 'Watching'
+        seasonal = 'true'
+        opening = 'false'
+        ending = 'false'
+        episode = '1'
+        overallScore = '5'
+        score = '5'
+        date = '01/01'
+        time = '24'
         for card in resp.json():
-            print('Title:' ,card['name'])
+            title = card['name']
             for i in range (1, len(card['customFieldItems'])):
                 cardResult = card['customFieldItems'][i]
-                input(cardResult)
                 if '5cfc17ea5fa7063f7b1abae8' in str(cardResult):
-                    print('Type:', cardResult['value']['text]'])
+                    type = cardResult['value']['text]']
                 elif '5cfc17ceb3d87c45523dc9a7' in str(cardResult):
-                    print('Status:',cardResult['value']['text'])
+                    status = cardResult['value']['text']
                 elif '5cfc00e164a4975195f74fc4' in str(cardResult):
-                    print('Seasonal:', cardResult['value']['checked'])
-                elif '5cfc009ada495f2053d781ff' in str(cardResult):
-                    print('Episode:', cardResult['value']['number'])
-                elif '5cfc0081e385111a1620a825' in str(cardResult):
-                    print('Overall score:', cardResult['value']['number'])
-                elif '5cfc006534d0a687623b83aa' in str(cardResult):
-                    print('Score:', cardResult['value']['number'])
+                    seasonal = cardResult['value']['checked']
                 elif '5cfc00571732b354fd81856a' in str(cardResult):
-                    print('Episode:', cardResult['value']['number'])
+                    episode = cardResult['value']['number']
+                elif '5cfc0081e385111a1620a825' in str(cardResult):
+                    overallScore  = cardResult['value']['number']
+                elif '5cfc006534d0a687623b83aa' in str(cardResult):
+                    score = cardResult['value']['number']
                 elif '5cfbfeec70352166da99330d' in str(cardResult):
-                    print('Date:', cardResult['value']['text'])
+                    date = cardResult['value']['text']
                 elif '5cfc00eaeeea3c5e8fb3dbaf' in str(cardResult):
-                    print('Opening:', cardResult['value']['checked'])
+                    opening = cardResult['value']['checked']
                 elif '5cfc009ada495f2053d781ff' in str(cardResult):
-                    print('Time:', cardResult['value']['number'])
+                    time =  cardResult['value']['number']
                 else:
-                    print('Ending:', cardResult['value']['checked'])
-
-
-
-
-            print(card['customFieldItems'])
-            # title = card['name']
-            # shortLink = card['shortLink']
-            # cards.append([title, shortLink])
-        return cards
+                    ending = cardResult['value']['checked']
+            anime = [date, title, episode, score, overallScore, type, time, status, seasonal, opening, ending ]
+            cards.append(anime)
+    return cards
 
 
 def getCardData(key, token, cards):
@@ -201,5 +202,6 @@ def getCardData(key, token, cards):
 
 cred = getCredentials()
 cards = getCards(cred[0], cred[1])
+print(cards)
 # getCardData(cred[0], cred[1], cards)
 
