@@ -20,7 +20,7 @@ import configparser
 # resp = requests.get('https://api.trello.com/1/lists/5cf41baca2d0f13ae6397728/cards/?key=400ebd4d957e10315b1737dc60f9dfe5'
 #                     '&token=135dc453ffd96de1bb40ecce34767066c6a12d8eb72d14cb567a5c7a35ec6caf')
 
-# Call to the Watching list
+# Call to the Watched list
 # resp = requests.get('https://api.trello.com/1/lists/5cf41ba7fab15d6885a771d7/cards/?key=400ebd4d957e10315b1737dc60f9dfe5'
 #                     '&token=135dc453ffd96de1bb40ecce34767066c6a12d8eb72d14cb567a5c7a35ec6caf')
 
@@ -48,7 +48,7 @@ import configparser
 # # with open(path, 'w') as f:
 # #     json.dump(my_data + "\n",  f)
 # for todo_item in resp.json():
-#     print(todo_item, '\n')
+#     print(todo_item['shortLink'], '\n')
 
 
 
@@ -86,7 +86,7 @@ def getCredentials():
         quit()
 
 def addNewCard(key, token, title):
-    task = {"idList": "5cf41baca2d0f13ae6397728", "name": title, "desc": "A litle gift for you Kanan-chan...",
+    task = {"idList": "5cf41baca2d0f13ae6397728", "name": title, "desc": "A litle gift from Animu-san to you Kanan-chan...",
             "idLabels":("5cc3877691d0c2ddc511b707", "5cc3877691d0c2ddc511b70a")}
     resp = requests.post('https://api.trello.com/1/cards/?key={}&token={}'.format(key, token), json=task)
     if resp.status_code != 200:
@@ -104,7 +104,7 @@ def addCustomFields(shortLink, key, token, episode, time, type, status, seasonal
                          .format(shortLink, customField, key, token), json=task)
 
     if resp.status_code != 200:
-        print('[Number] Episode error: '.format(resp.status_code))
+        print('[Error] Episode error: '.format(resp.status_code))
 
     # [Number] Time:
     task = {"value": {"number": time}}
@@ -113,7 +113,7 @@ def addCustomFields(shortLink, key, token, episode, time, type, status, seasonal
                          .format(shortLink, customField, key, token), json=task)
 
     if resp.status_code != 200:
-        print('[Number] Time error: '.format(resp.status_code))
+        print('[Error] Time error: '.format(resp.status_code))
 
     # [Text] Type:
     task = {"value": {"text": type}}
@@ -122,7 +122,7 @@ def addCustomFields(shortLink, key, token, episode, time, type, status, seasonal
                          .format(shortLink, customField, key, token), json=task)
 
     if resp.status_code != 200:
-        print('[Text] Type error: '.format(resp.status_code))
+        print('[Error] Type error: '.format(resp.status_code))
 
     # [Text] Status:
     task = {"value": {"text": status}}
@@ -131,7 +131,7 @@ def addCustomFields(shortLink, key, token, episode, time, type, status, seasonal
                          .format(shortLink, customField, key, token), json=task)
 
     if resp.status_code != 200:
-        print('[Text] Status error: '.format(resp.status_code))
+        print('[Error] Status error: '.format(resp.status_code))
 
     # [Checkbox] Seasonal:
     task = {"value": {"checked": seasonal}}
@@ -140,9 +140,25 @@ def addCustomFields(shortLink, key, token, episode, time, type, status, seasonal
                          .format(shortLink, customField, key, token), json=task)
 
     if resp.status_code != 200:
-        print('[Checkbox] Seasonal error: '.format(resp.status_code))
+        print('[Error] Seasonal error: '.format(resp.status_code))
     else:
         print("Finished!")
+
+def getCard():
+    resp = requests.get(
+        'https://api.trello.com/1/lists/5cf41ba7fab15d6885a771d7/cards/?key=400ebd4d957e10315b1737dc60f9dfe5'
+        '&token=135dc453ffd96de1bb40ecce34767066c6a12d8eb72d14cb567a5c7a35ec6caf')
+
+    cards = []
+    if resp.status_code != 200:
+        print('[Error] Card retrival error: '.format(resp.status_code))
+    else:
+        for card in resp.json():
+            title = card['name']
+            shortLink = card['shortLink']
+            cards.append([title, shortLink])
+        return cards
+
 
 
 
