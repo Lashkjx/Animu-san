@@ -74,8 +74,20 @@ import configparser
 #     print('Created card. Short ID: {}'.format(resp.json()["shortLink"]))
 #     print('Good Job!')
 
-def addNewCard(key, token, title, desc):
-    task = {"idList": "5cf41baca2d0f13ae6397728", "name": title, "desc": desc, "idLabels":("5cc3877691d0c2ddc511b707", "5cc3877691d0c2ddc511b70a")}
+def getCredentials():
+    if os.path.exists(os.getcwd() + '\\Credentials.ini'):
+        cred = configparser.ConfigParser()
+        cred.read('Credentials.ini')
+        key = cred.get('Credentials', 'key')
+        token = cred.get('Credentials', 'token')
+        return [key, token]
+    else:
+        input('The credential file is missing!\n')
+        quit()
+
+def addNewCard(key, token, title):
+    task = {"idList": "5cf41baca2d0f13ae6397728", "name": title, "desc": "A litle gift for you Kanan-chan...",
+            "idLabels":("5cc3877691d0c2ddc511b707", "5cc3877691d0c2ddc511b70a")}
     resp = requests.post('https://api.trello.com/1/cards/?key={}&token={}'.format(key, token), json=task)
     if resp.status_code != 200:
         print('GET /tasks/ {}'.format(resp.status_code))
@@ -89,7 +101,7 @@ def addCustomFields(shortLink, key, token, episode, time, type, status, seasonal
     task = {"value": {"number": episode}}
     customField = '5cfc00571732b354fd81856a'
     resp = requests.put ('https://api.trello.com/1/cards/{}/customField/{}/item/?key={}&token={}'
-                         .format(id, customField, key, token), json=task)
+                         .format(shortLink, customField, key, token), json=task)
 
     if resp.status_code != 200:
         print('[Number] Episode error: '.format(resp.status_code))
@@ -98,7 +110,7 @@ def addCustomFields(shortLink, key, token, episode, time, type, status, seasonal
     task = {"value": {"number": time}}
     customField = '5cfc009ada495f2053d781ff'
     resp = requests.put ('https://api.trello.com/1/cards/{}/customField/{}/item/?key={}&token={}'
-                         .format(id, customField, key, token), json=task)
+                         .format(shortLink, customField, key, token), json=task)
 
     if resp.status_code != 200:
         print('[Number] Time error: '.format(resp.status_code))
@@ -107,7 +119,7 @@ def addCustomFields(shortLink, key, token, episode, time, type, status, seasonal
     task = {"value": {"text": type}}
     customField = '5cfc17ea5fa7063f7b1abae8'
     resp = requests.put ('https://api.trello.com/1/cards/{}/customField/{}/item/?key={}&token={}'
-                         .format(id, customField, key, token), json=task)
+                         .format(shortLink, customField, key, token), json=task)
 
     if resp.status_code != 200:
         print('[Text] Type error: '.format(resp.status_code))
@@ -116,7 +128,7 @@ def addCustomFields(shortLink, key, token, episode, time, type, status, seasonal
     task = {"value": {"text": status}}
     customField = '5cfc17ceb3d87c45523dc9a7'
     resp = requests.put ('https://api.trello.com/1/cards/{}/customField/{}/item/?key={}&token={}'
-                         .format(id, customField, key, token), json=task)
+                         .format(shortLink, customField, key, token), json=task)
 
     if resp.status_code != 200:
         print('[Text] Status error: '.format(resp.status_code))
@@ -125,23 +137,12 @@ def addCustomFields(shortLink, key, token, episode, time, type, status, seasonal
     task = {"value": {"checked": seasonal}}
     customField = '5cfc00e164a4975195f74fc4'
     resp = requests.put ('https://api.trello.com/1/cards/{}/customField/{}/item/?key={}&token={}'
-                         .format(id, customField, key, token), json=task)
+                         .format(shortLink, customField, key, token), json=task)
 
     if resp.status_code != 200:
         print('[Checkbox] Seasonal error: '.format(resp.status_code))
     else:
         print("Finished!")
 
-if os.path.exists(os.getcwd() + '\\Credentials.ini'):
-    cred = configparser.ConfigParser()
-    cred.read('Credentials.ini')
-else:
-    input('The credential file is missing!\n')
-    quit()
 
-# Routes
-key = cred.get('Credentials', 'Key')
-token = cred.get('Credentials', 'Token')
-#
-id = addNewCard(key, token, "Okudaira Akira", "The best friend anyone could ever had. Even bigger than Komi-san")
-# addCustomFields(id, key, token,  "1", "24", "TV", "Watching", "true")
+

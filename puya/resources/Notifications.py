@@ -9,3 +9,4 @@ def pushNotification(msg):
 def pushSadNotification(msg):
     notify.send(msg)
 
+
