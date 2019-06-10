@@ -38,8 +38,8 @@ def addCustomFields(shortLink, key, token, episode, time, type, status, seasonal
         print('[Error] Episode error: {}'.format(resp.status_code))
 
     # [Number] Time:
-    task = {"value": {"number": time}}
-    customField = '5cfc009ada495f2053d781ff'
+    task = {"value": {"text": time}}
+    customField = '5cfd9a2b0b964230a45681d6'
     resp = requests.put ('https://api.trello.com/1/cards/{}/customField/{}/item/?key={}&token={}'
                          .format(shortLink, customField, key, token), json=task)
 
@@ -130,10 +130,21 @@ def getCards(key, token):
             cards.append(anime)
     return cards
 
+def addCustomCards(title, episodes, isSeasonal):
+    cred = getCredentials()
+    sheet = initializeAnimuTan()
+    animeData = getAnimeData(sheet, title, True)
+    for ep in range(1,episodes + 1):
+        id = addNewCard(cred[0], cred[1], title)
+        addCustomFields(id, cred[0], cred[1], str(ep), animeData[0], animeData[1], "Watching", isSeasonal)
 
-cred = getCredentials()
-cards = getCards(cred[0], cred[1])
-driver = initializeAnimuChan()
-addEntry(driver, cards)
+
+addCustomCards('Skirt no Naka wa Kedamono Deshita', 10, 'false')
+
+
+# cred = getCredentials()
+# cards = getCards(cred[0], cred[1])
+# driver = initializeAnimuChan()
+# addEntry(driver, cards)
 # getCardData(cred[0], cred[1], cards)
 

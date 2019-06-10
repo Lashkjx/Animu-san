@@ -9,7 +9,11 @@ client = gs.authorize(cred)
 
 def initializeAnimuSan():
     sheet = client.open('Animu-san').sheet1
+    return sheet
 
+def initializeAnimuTan():
+    sheet = client.open('Animu-san').get_worksheet(1)
+    return sheet
 
 def initializeAnimuChan():
     sheet = client.open('Anime 2019').sheet1
@@ -36,19 +40,32 @@ def getLastEntry():
 def setLastEntry(entry):
     sheet.update_cell(3,1,entry)
 
-def getAnimeData(title):
+def getAnimeData(sheet, title, isCustom):
     data = True
     animeData = []
     i = 2
-    while data:
-        if sheet.cell(i, 2).value == title:
-            for j in range(3,6):
-                animeData.append(sheet.cell(i, j).value)
-            return animeData
-            break
-        elif(sheet.cell(i,2).value == ''):
-            data = False
-        i += 1
+    if isCustom:
+        while data:
+            if sheet.cell(i, 1).value == title:
+                for j in range(2, 4):
+                    animeData.append(sheet.cell(i, j).value)
+                return animeData
+                break
+            elif (sheet.cell(i, 2).value == ''):
+                data = False
+            i += 1
+    else:
+        while data:
+            if sheet.cell(i, 2).value == title:
+                for j in range(3,6):
+                    animeData.append(sheet.cell(i, j).value)
+                return animeData
+                break
+            elif(sheet.cell(i,2).value == ''):
+                data = False
+            i += 1
+
+
 
 def addEntry(sheet, entryData):
     for entry in range (0, len(entryData)):
