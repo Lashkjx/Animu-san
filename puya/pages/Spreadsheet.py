@@ -1,14 +1,19 @@
 import gspread as gs
 from oauth2client.service_account import ServiceAccountCredentials as sac
 
-
 # Variables.
 scope = ['https://www.googleapis.com/auth/drive']
 cred = sac.from_json_keyfile_name('C:/Users/Kanan Lashkjx/.oauth2/my_credential.json', scope)
 client = gs.authorize(cred)
 
-# Google sheet file.
-sheet = client.open('Animu-san').sheet1
+
+def initializeAnimuSan():
+    sheet = client.open('Animu-san').sheet1
+
+
+def initializeAnimuChan():
+    sheet = client.open('Anime 2019').sheet1
+    return sheet
 
 def animeEntriesGS():
     data = True
@@ -44,6 +49,13 @@ def getAnimeData(title):
         elif(sheet.cell(i,2).value == ''):
             data = False
         i += 1
+
+def addEntry(sheet, entryData):
+    for entry in range (0, len(entryData)):
+        emptyRow = sheet.cell(2, 12).value
+        for data in range (0, len(entryData[0])):
+            sheet.update_cell(emptyRow, data + 1, str(entryData[entry][data]))
+    input("\n       - Thank you! For using me Kanan-chan! -")
 
 
 

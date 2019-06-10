@@ -2,6 +2,8 @@ import requests
 import json
 import os
 import configparser
+from pages.Spreadsheet import *
+
 
 
 # Call to everything.
@@ -148,31 +150,28 @@ def getCards(key, token):
     list = '5cf41ba7fab15d6885a771d7'
     resp = requests.get('https://api.trello.com/1/lists/{}/cards/?customFieldItems=true&key={}&token={}'
                         .format(list, key, token))
-
     cards = []
     if resp.status_code != 200:
         print('[Error] Card retrival error: {}'.format(resp.status_code))
     else:
-        type = 'TV'
-        status = 'Watching'
-        seasonal = 'true'
-        opening = 'false'
-        ending = 'false'
-        episode = '1'
-        overallScore = '5'
-        score = '5'
-        date = '01/01'
-        time = '24'
         for card in resp.json():
             title = card['name']
-            for i in range (1, len(card['customFieldItems'])):
+            type = 'TV'
+            status = 'Watching'
+            seasonal = 'YES'
+            opening = 'NO'
+            ending = 'NO'
+            episode = '1'
+            overallScore = '5'
+            score = '5'
+            date = '01/01'
+            time = '24 min.'
+            for i in range (0, len(card['customFieldItems'])):
                 cardResult = card['customFieldItems'][i]
                 if '5cfc17ea5fa7063f7b1abae8' in str(cardResult):
-                    type = cardResult['value']['text]']
+                    type = cardResult['value']['text']
                 elif '5cfc17ceb3d87c45523dc9a7' in str(cardResult):
                     status = cardResult['value']['text']
-                elif '5cfc00e164a4975195f74fc4' in str(cardResult):
-                    seasonal = cardResult['value']['checked']
                 elif '5cfc00571732b354fd81856a' in str(cardResult):
                     episode = cardResult['value']['number']
                 elif '5cfc0081e385111a1620a825' in str(cardResult):
@@ -181,27 +180,31 @@ def getCards(key, token):
                     score = cardResult['value']['number']
                 elif '5cfbfeec70352166da99330d' in str(cardResult):
                     date = cardResult['value']['text']
+                elif '5cfd9a2b0b964230a45681d6' in str(cardResult):
+                    time = cardResult['value']['text']
+                elif '5cfc00e164a4975195f74fc4' in str(cardResult):
+                    if str(cardResult['value']['checked']) == 'true':
+                        seasonal = 'YES'
+                    else:
+                        seasonal = 'NO'
                 elif '5cfc00eaeeea3c5e8fb3dbaf' in str(cardResult):
-                    opening = cardResult['value']['checked']
-                elif '5cfc009ada495f2053d781ff' in str(cardResult):
-                    time =  cardResult['value']['number']
+                    if str(cardResult['value']['checked']) == 'true':
+                        opening = 'YES'
+                    else:
+                        opening = 'NO'
                 else:
-                    ending = cardResult['value']['checked']
-            anime = [date, title, episode, score, overallScore, type, time, status, seasonal, opening, ending ]
+                    if str(cardResult['value']['checked']) == 'true':
+                        ending = 'YES'
+                    else:
+                        ending = 'NO'
+            anime = [date, title, episode, score, overallScore, type, time, status, seasonal, opening, ending]
             cards.append(anime)
     return cards
 
 
-def getCardData(key, token, cards):
-    for card in cards:
-        shortLink = card[1]
-        resp = requests.get('https://api.trello.com/1/cards/{}/customFields/?key={}''&token={}'
-                            .format(shortLink, key, token))
-        print('Name: ', cards[0])
-        print(resp.json())
-
 cred = getCredentials()
 cards = getCards(cred[0], cred[1])
-print(cards)
+driver = initializeAnimuChan()
+addEntry(driver, cards)
 # getCardData(cred[0], cred[1], cards)
 

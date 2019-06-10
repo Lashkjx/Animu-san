@@ -48,6 +48,8 @@ def executeRSS():
 print("       - Welcome Kanan-chan! to ANIMU-SAN v.1.0.1 -\n")
 # print("     - ARA ARA What I can do for you today, Kanan? -")
 
+
+initializeAnimuSan()
 animeEntries = animeEntriesGS()
 lastEntry = getLastEntry()
 entry = executeRSS()
