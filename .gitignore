@@ -4,7 +4,7 @@
 /resources/notify-run
 /venv
 /.idea
-/Credentials.ini
+/puya/Credentials.ini
 /__init__.spec
 /puya/__pycache__/
 /puya/geckodriver.log
