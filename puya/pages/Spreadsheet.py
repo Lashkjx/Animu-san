@@ -19,7 +19,7 @@ def initializeAnimuChan():
     sheet = client.open('Anime 2019').sheet1
     return sheet
 
-def animeEntriesGS():
+def animeEntriesGS(sheet):
     data = True
     animeEntries = []
     i = 2
@@ -34,10 +34,10 @@ def animeEntriesGS():
 def animeStopGS():
     return sheet.cell(2, 2).value
 
-def getLastEntry():
+def getLastEntry(sheet):
     return sheet.cell(3,1).value
 
-def setLastEntry(entry):
+def setLastEntry(sheet, entry):
     sheet.update_cell(3,1,entry)
 
 def getAnimeData(sheet, title, isCustom):

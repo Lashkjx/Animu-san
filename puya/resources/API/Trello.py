@@ -87,7 +87,7 @@ def getCards(key, token):
             title = card['name']
             type = 'TV'
             status = 'Watching'
-            seasonal = 'YES'
+            seasonal = 'NO'
             opening = 'NO'
             ending = 'NO'
             episode = '1'
@@ -114,18 +114,12 @@ def getCards(key, token):
                 elif '5cfc00e164a4975195f74fc4' in str(cardResult):
                     if str(cardResult['value']['checked']) == 'true':
                         seasonal = 'YES'
-                    else:
-                        seasonal = 'NO'
                 elif '5cfc00eaeeea3c5e8fb3dbaf' in str(cardResult):
                     if str(cardResult['value']['checked']) == 'true':
                         opening = 'YES'
-                    else:
-                        opening = 'NO'
                 else:
                     if str(cardResult['value']['checked']) == 'true':
                         ending = 'YES'
-                    else:
-                        ending = 'NO'
             anime = [date, title, episode, score, overallScore, type, time, status, seasonal, opening, ending]
             cards.append(anime)
     return cards
@@ -139,12 +133,12 @@ def addCustomCards(title, episodes, isSeasonal):
         addCustomFields(id, cred[0], cred[1], str(ep), animeData[0], animeData[1], "Watching", isSeasonal)
 
 
-addCustomCards('Skirt no Naka wa Kedamono Deshita', 10, 'false')
+# addCustomCards('Skirt no Naka wa Kedamono Deshita', 10, 'false')
 
 
-# cred = getCredentials()
-# cards = getCards(cred[0], cred[1])
-# driver = initializeAnimuChan()
-# addEntry(driver, cards)
+cred = getCredentials()
+cards = getCards(cred[0], cred[1])
+driver = initializeAnimuChan()
+addEntry(driver, cards)
 # getCardData(cred[0], cred[1], cards)
 

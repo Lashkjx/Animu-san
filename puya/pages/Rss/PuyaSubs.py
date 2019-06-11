@@ -5,7 +5,8 @@ from resources.API.Trello import *
 
 
 def addTrelloCard(title, episode):
-    animeData = getAnimeData(title)
+    driver = initializeAnimuSan()
+    animeData = getAnimeData(driver, title, False)
     cred = getCredentials()
     id = addNewCard(cred[0], cred[1], title)
     addCustomFields(id, cred[0], cred[1], episode, animeData[0], animeData[1], "Watching", "true")
