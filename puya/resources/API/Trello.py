@@ -124,7 +124,7 @@ def getCards(key, token):
             cards.append(anime)
     return cards
 
-def addCustomCards(title, episodes, isSeasonal):
+def addCustomCardSeries(title, episodes, isSeasonal):
     cred = getCredentials()
     sheet = initializeAnimuTan()
     animeData = getAnimeData(sheet, title, True)
@@ -132,13 +132,29 @@ def addCustomCards(title, episodes, isSeasonal):
         id = addNewCard(cred[0], cred[1], title)
         addCustomFields(id, cred[0], cred[1], str(ep), animeData[0], animeData[1], "Watching", isSeasonal)
 
+def addCustomCardEpisodes(title, first, last, isSeasonal):
+    cred = getCredentials()
+    sheet = initializeAnimuTan()
+    animeData = getAnimeData(sheet, title, True)
+    for ep in range(first,last + 1):
+        id = addNewCard(cred[0], cred[1], title)
+        addCustomFields(id, cred[0], cred[1], str(ep), animeData[0], animeData[1], "Watching", isSeasonal)
+
+def addCustomCardsEpisode(title, episode, isSeasonal):
+    cred = getCredentials()
+    sheet = initializeAnimuTan()
+    animeData = getAnimeData(sheet, title, True)
+    id = addNewCard(cred[0], cred[1], title)
+    addCustomFields(id, cred[0], cred[1], str(episode), animeData[0], animeData[1], "Watching", isSeasonal)
+
 
 # addCustomCards('Skirt no Naka wa Kedamono Deshita', 10, 'false')
+# addCustomCardsEpisode('Miru Tights', 5, 'false')
 
 
-cred = getCredentials()
-cards = getCards(cred[0], cred[1])
-driver = initializeAnimuChan()
-addEntry(driver, cards)
+# cred = getCredentials()
+# cards = getCards(cred[0], cred[1])
+# driver = initializeAnimuChan()
+# addEntry(driver, cards)
 # getCardData(cred[0], cred[1], cards)
 
