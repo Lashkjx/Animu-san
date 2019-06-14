@@ -5,6 +5,14 @@ import configparser
 from pages.Spreadsheet import *
 
 
+def moveToTrash(key, token, shortLink):
+    trashId = "5cfd3db10afb4231883eaab9"
+    resp = requests.put ('https://api.trello.com/1/cards/{}/idList?value={}&key={}&token={}'
+                         .format(shortLink, trashId, key, token))
+
+    if resp.status_code != 200:
+        print('[Error] Status error: {}'.format(resp.status_code))
+
 def getCredentials():
     if os.path.exists(os.getcwd() + '\\Credentials.ini'):
         cred = configparser.ConfigParser()
@@ -38,8 +46,8 @@ def addCustomFields(shortLink, key, token, episode, time, type, status, seasonal
         print('[Error] Episode error: {}'.format(resp.status_code))
 
     # [Number] Time:
-    task = {"value": {"number": time}}
-    customField = '5cfc009ada495f2053d781ff'
+    task = {"value": {"text": time}}
+    customField = '5cfd9a2b0b964230a45681d6'
     resp = requests.put ('https://api.trello.com/1/cards/{}/customField/{}/item/?key={}&token={}'
                          .format(shortLink, customField, key, token), json=task)
 
@@ -87,7 +95,7 @@ def getCards(key, token):
             title = card['name']
             type = 'TV'
             status = 'Watching'
-            seasonal = 'YES'
+            seasonal = 'NO'
             opening = 'NO'
             ending = 'NO'
             episode = '1'
@@ -95,6 +103,7 @@ def getCards(key, token):
             score = '5'
             date = '01/01'
             time = '24 min.'
+            shortLink = card["shortLink"]
             for i in range (0, len(card['customFieldItems'])):
                 cardResult = card['customFieldItems'][i]
                 if '5cfc17ea5fa7063f7b1abae8' in str(cardResult):
@@ -114,26 +123,49 @@ def getCards(key, token):
                 elif '5cfc00e164a4975195f74fc4' in str(cardResult):
                     if str(cardResult['value']['checked']) == 'true':
                         seasonal = 'YES'
-                    else:
-                        seasonal = 'NO'
                 elif '5cfc00eaeeea3c5e8fb3dbaf' in str(cardResult):
                     if str(cardResult['value']['checked']) == 'true':
                         opening = 'YES'
-                    else:
-                        opening = 'NO'
                 else:
                     if str(cardResult['value']['checked']) == 'true':
                         ending = 'YES'
-                    else:
-                        ending = 'NO'
             anime = [date, title, episode, score, overallScore, type, time, status, seasonal, opening, ending]
             cards.append(anime)
+            moveToTrash(key, token, shortLink)
     return cards
 
+def addCustomCardSeries(title, episodes, isSeasonal):
+    cred = getCredentials()
+    sheet = initializeAnimuTan()
+    animeData = getAnimeData(sheet, title, True)
+    for ep in range(1,episodes + 1):
+        id = addNewCard(cred[0], cred[1], title)
+        addCustomFields(id, cred[0], cred[1], str(ep), animeData[0], animeData[1], "Watching", isSeasonal)
+
+def addCustomCardEpisodes(title, first, last, isSeasonal):
+    cred = getCredentials()
+    sheet = initializeAnimuTan()
+    animeData = getAnimeData(sheet, title, True)
+    for ep in range(first,last + 1):
+        id = addNewCard(cred[0], cred[1], title)
+        addCustomFields(id, cred[0], cred[1], str(ep), animeData[0], animeData[1], "Watching", isSeasonal)
+
+def addCustomCardsEpisode(title, episode, isSeasonal):
+    cred = getCredentials()
+    sheet = initializeAnimuTan()
+    animeData = getAnimeData(sheet, title, True)
+    id = addNewCard(cred[0], cred[1], title)
+    addCustomFields(id, cred[0], cred[1], str(episode), animeData[0], animeData[1], "Watching", isSeasonal)
+
+
+# addCustomCards('Skirt no Naka wa Kedamono Deshita', 10, 'false')
+# addCustomCardsEpisode('Miru Tights', 5, 'false')
 
 cred = getCredentials()
 cards = getCards(cred[0], cred[1])
 driver = initializeAnimuChan()
 addEntry(driver, cards)
-# getCardData(cred[0], cred[1], cards)
+
+# cred = getCredentials()
+# test(cred[0], cred[1])
 
