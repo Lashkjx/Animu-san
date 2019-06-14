@@ -5,6 +5,14 @@ import configparser
 from pages.Spreadsheet import *
 
 
+def moveToTrash(key, token, shortLink):
+    trashId = "5cfd3db10afb4231883eaab9"
+    resp = requests.put ('https://api.trello.com/1/cards/{}/idList?value={}&key={}&token={}'
+                         .format(shortLink, trashId, key, token))
+
+    if resp.status_code != 200:
+        print('[Error] Status error: {}'.format(resp.status_code))
+
 def getCredentials():
     if os.path.exists(os.getcwd() + '\\Credentials.ini'):
         cred = configparser.ConfigParser()
@@ -95,6 +103,7 @@ def getCards(key, token):
             score = '5'
             date = '01/01'
             time = '24 min.'
+            shortLink = card["shortLink"]
             for i in range (0, len(card['customFieldItems'])):
                 cardResult = card['customFieldItems'][i]
                 if '5cfc17ea5fa7063f7b1abae8' in str(cardResult):
@@ -122,6 +131,7 @@ def getCards(key, token):
                         ending = 'YES'
             anime = [date, title, episode, score, overallScore, type, time, status, seasonal, opening, ending]
             cards.append(anime)
+            moveToTrash(key, token, shortLink)
     return cards
 
 def addCustomCardSeries(title, episodes, isSeasonal):
@@ -151,10 +161,11 @@ def addCustomCardsEpisode(title, episode, isSeasonal):
 # addCustomCards('Skirt no Naka wa Kedamono Deshita', 10, 'false')
 # addCustomCardsEpisode('Miru Tights', 5, 'false')
 
+cred = getCredentials()
+cards = getCards(cred[0], cred[1])
+driver = initializeAnimuChan()
+addEntry(driver, cards)
 
 # cred = getCredentials()
-# cards = getCards(cred[0], cred[1])
-# driver = initializeAnimuChan()
-# addEntry(driver, cards)
-# getCardData(cred[0], cred[1], cards)
+# test(cred[0], cred[1])
 
