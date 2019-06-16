@@ -46,8 +46,8 @@ def getAnimeData(sheet, title, isCustom):
     i = 2
     if isCustom:
         while data:
-            if sheet.cell(i, 1).value == title:
-                for j in range(2, 4):
+            if title in sheet.cell(i, 1).value:
+                for j in range(1, 5):
                     animeData.append(sheet.cell(i, j).value)
                 return animeData
                 break
@@ -56,7 +56,7 @@ def getAnimeData(sheet, title, isCustom):
             i += 1
     else:
         while data:
-            if sheet.cell(i, 2).value == title:
+            if title in sheet.cell(i, 2).value:
                 for j in range(3,6):
                     animeData.append(sheet.cell(i, j).value)
                 return animeData
@@ -64,7 +64,7 @@ def getAnimeData(sheet, title, isCustom):
             elif(sheet.cell(i,2).value == ''):
                 data = False
             i += 1
-
+    print("[Animu-san] Ara ara, I didn\'t understand. Can you repeat it?")
 
 
 def addEntry(sheet, entryData):
@@ -72,7 +72,7 @@ def addEntry(sheet, entryData):
         emptyRow = sheet.cell(2, 12).value
         for data in range (0, len(entryData[0])):
             sheet.update_cell(emptyRow, data + 1, str(entryData[entry][data]))
-    input("\n       - Thank you! For using me Kanan-chan! -")
+    input("\n[Animu-san] Ara ara, I updated your spreadsheet Kanan-chan!")
 
 
 
