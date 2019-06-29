@@ -5,6 +5,7 @@ from UI.MyAnimeList import *
 from Rss.PuyaSubs import puyaRSS
 from pages.Spreadsheet import *
 from resources.API.Trello import *
+from resources.CSV.CSV import *
 from datetime import datetime, timedelta
 import os
 import keyboard
@@ -112,7 +113,7 @@ def menuClassic():
         addEpisode()
     elif request == 'q':
         print("\n        ------------------------------------------------\n"
-              "        |        - You're welcome! Kanan-chan! -        |\n"
+              "        |                - Bye bye, Kanan-chan! -        |\n"
               "        ------------------------------------------------")
         quit()
     else:
@@ -124,19 +125,19 @@ def menuModern():
                     "[Kanan-chan] ")
 
     if 'can you' in request.lower() or 'i want to' in request.lower():
-        if 'download' in request.lower() and 'please' in request.lower():
+        if 'download' in request.lower():
             isThatAMotherFuckingJojoReference('download')
             initDownload()
-        elif 'update' in request.lower() and 'please' in request.lower():
+        elif 'update' in request.lower():
             isThatAMotherFuckingJojoReference('update my spreadsheet')
             updateSpreedsheet()
-        elif 'series to trello' in request.lower() and 'please' in request.lower():
+        elif 'series to trello' in request.lower():
             isThatAMotherFuckingJojoReference('add a series to Trello')
             addSeries()
-        elif 'episodes to trello' in request.lower() and 'please' in request.lower():
+        elif 'episodes to trello' in request.lower():
             isThatAMotherFuckingJojoReference('add episodes to Trello')
             addEpisodes()
-        elif 'episode to trello' in request.lower() and 'please' in request.lower():
+        elif 'episode to trello' in request.lower():
             isThatAMotherFuckingJojoReference('add an episode to Trello')
             addEpisode()
         else:
