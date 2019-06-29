@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from UI.PuyaSubs import puyaUI
+from UI.MyAnimeList import *
 from Rss.PuyaSubs import puyaRSS
 from pages.Spreadsheet import *
 from resources.API.Trello import *
@@ -59,6 +60,12 @@ def updateSpreedsheet():
     driver = initializeAnimuChan()
     addEntry(driver, cards)
 
+def findPattern():
+    cred = getCredentials()
+    sheet = initializeAnimuTan()
+    title = input('[Animu-san] Please give me the title: ')
+    animeData = getAnimeDataList(sheet, title)
+
 def addSeries():
     title = input('[Animu-san] Please give me the title: ')
     episodes = input('[Animu-san] Please tell me the amount of episodes: ')
@@ -66,14 +73,16 @@ def addSeries():
 
 def addEpisodes():
     title = input('[Animu-san] Please give me the title: ')
+    status = input('[Animu-san] Please give me the status: ')
     first = input('[Animu-san] Please tell me the first episode: ')
     last = input('[Animu-san] Pleass tell me the last episode: ')
-    addCustomCardEpisodes(title, first, last)
+    addCustomCardEpisodes(title, first, last, status)
 
 def addEpisode():
     title = input('[Animu-san] Please give me the title: ')
-    episode = input('[Animu-san] Please tell me the episode number: ')
-    addCustomCardsEpisode(title, episode)
+    status = input('[Animu-san] Please give me the status: ')
+    episode = input('[Animu-san] Please tell me the episode number: \n')
+    addCustomCardsEpisode(title, episode, status)
 
 def menuClassic():
     print("\n[Animu-san] ARA ARA What I can do for you today, Kanan?")
