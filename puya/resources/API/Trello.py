@@ -133,30 +133,47 @@ def getCards(key, token):
             moveToTrash(key, token, shortLink)
     return cards
 
-def addCustomCardSeries(title, episodes):
+def addCustomCardSeries(title, episodes, status):
     cred = getCredentials()
     sheet = initializeAnimuTan()
     animeData = getAnimeData(sheet, title, True)
     for ep in range(1, int(episodes) + 1):
         print("[Animu-san] Ara ara, I uploaded a card for: " + animeData[0] + " - " + str(ep))
         id = addNewCard(cred[0], cred[1], animeData[0])
-        addCustomFields(id, cred[0], cred[1], str(ep), animeData[1], animeData[2], "Watching", animeData[3])
+        if status == '':
+            status = animeData[4]
+        addCustomFields(id, cred[0], cred[1], str(ep), animeData[1], animeData[2], status, animeData[3])
+    input("[Animu-san] Ara ara, I finish uploading your series...")
 
-def addCustomCardEpisodes(title, first, last):
+def addCustomCardEpisodes(title, first, last, status):
     cred = getCredentials()
     sheet = initializeAnimuTan()
     animeData = getAnimeData(sheet, title, True)
     for ep in range(int(first), int(last) + 1):
         print("[Animu-san] Ara ara, I uploaded a card for: " + animeData[0] + " - " + str(ep))
         id = addNewCard(cred[0], cred[1], animeData[0])
-        addCustomFields(id, cred[0], cred[1], str(ep), animeData[1], animeData[2], "Watching", animeData[3])
+        if status == '':
+            status = animeData[4]
+        addCustomFields(id, cred[0], cred[1], str(ep), animeData[1], animeData[2], status, animeData[3])
+    input("[Animu-san] Ara ara, I finish uploading your cards...")
 
-def addCustomCardsEpisode(title, episode):
+def addCustomCardsEpisode(title, episode, status):
     cred = getCredentials()
     sheet = initializeAnimuTan()
     animeData = getAnimeData(sheet, title, True)
     print("[Animu-san] Ara ara, I uploaded a card for: " + animeData[0] + " - " + episode)
     id = addNewCard(cred[0], cred[1], animeData[0])
-    addCustomFields(id, cred[0], cred[1], episode, animeData[1], animeData[2], "Watching", animeData[3])
+    if status == '':
+        status = animeData[4]
+    addCustomFields(id, cred[0], cred[1], episode, animeData[1], animeData[2], status, animeData[3])
+    input("[Animu-san] Ara ara, I finish uploading your card...")
 
+# def findPatterna():
+#     cred = getCredentials()
+#     sheet = initializeAnimuTan()
+#     title = input('[Animu-san] Please give me the title: ')
+#     print('')
+#     animeData = getAnimeDataList(sheet, title, False)
+#
+# findPatterna()
 
