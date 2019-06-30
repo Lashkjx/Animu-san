@@ -3,6 +3,7 @@ import json
 import os
 import configparser
 from pages.Spreadsheet import *
+from resources.CSV.CSV import *
 
 
 def moveToTrash(key, token, shortLink):
@@ -133,19 +134,17 @@ def getCards(key, token):
             moveToTrash(key, token, shortLink)
     return cards
 
-def addCustomCardSeries(title, episodes, status):
+def addCustomCardSeries(title, episodes):
     cred = getCredentials()
     sheet = initializeAnimuTan()
-    animeData = getAnimeData(sheet, title, True)
+    animeData = retrieve_data_csv('Anime register', title.lower())[0]
     for ep in range(1, int(episodes) + 1):
         print("[Animu-san] Ara ara, I uploaded a card for: " + animeData[0] + " - " + str(ep))
         id = addNewCard(cred[0], cred[1], animeData[0])
-        if status == '':
-            status = animeData[4]
-        addCustomFields(id, cred[0], cred[1], str(ep), animeData[1], animeData[2], status, animeData[3])
+        addCustomFields(id, cred[0], cred[1], str(ep), animeData[1], animeData[2], animeData[4], animeData[3])
     input("[Animu-san] Ara ara, I finish uploading your series...")
 
-def addCustomCardEpisodes(title, first, last, status):
+def addCustomCardEpisodes(title, first, last, status, seasonal):
     cred = getCredentials()
     sheet = initializeAnimuTan()
     animeData = getAnimeData(sheet, title, True)
@@ -157,7 +156,7 @@ def addCustomCardEpisodes(title, first, last, status):
         addCustomFields(id, cred[0], cred[1], str(ep), animeData[1], animeData[2], status, animeData[3])
     input("[Animu-san] Ara ara, I finish uploading your cards...")
 
-def addCustomCardsEpisode(title, episode, status):
+def addCustomCardsEpisode(title, episode, status, seasonal):
     cred = getCredentials()
     sheet = initializeAnimuTan()
     animeData = getAnimeData(sheet, title, True)

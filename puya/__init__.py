@@ -74,16 +74,16 @@ def addSeries():
 
 def addEpisodes():
     title = input('[Animu-san] Please give me the title: ')
-    status = input('[Animu-san] Please give me the status: ')
     first = input('[Animu-san] Please tell me the first episode: ')
     last = input('[Animu-san] Pleass tell me the last episode: ')
-    addCustomCardEpisodes(title, first, last, status)
+    addCustomCardEpisodes(title, first, last)
 
 def addEpisode():
     title = input('[Animu-san] Please give me the title: ')
-    status = input('[Animu-san] Please give me the status: ')
+    status = input('Please tell me are you watching or rewatching: ')
+    seasonal = input('[Animu-san] Please tell me if this is seasonal: ')
     episode = input('[Animu-san] Please tell me the episode number: \n')
-    addCustomCardsEpisode(title, episode, status)
+    addCustomCardsEpisode(title, episode, status, seasonal)
 
 def menuClassic():
     print("\n[Animu-san] ARA ARA What I can do for you today, Kanan?")

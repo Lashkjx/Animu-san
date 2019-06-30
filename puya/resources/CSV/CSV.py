@@ -40,8 +40,10 @@ def retrieve_data_csv(file, name):
             print("[" + str(j) + "] " + (animeDataList[j])[0])
         try:
             index = input('\n[Animu-san] Ara ara, which of those you\'re refering to?\n[Kanna-chan] ')
-            print(animeDataList[int(index)])
+            return animeDataList[int(index)]
         except IndexError:
             print('[Animu-san] Ara ara, that didn\'t exist! ')
+    else:
+        return animeDataList
 
-retrieve_data_csv('Anime register', 'idolm@ster')
+# retrieve_data_csv('Anime register', 'idolm@ster')

@@ -18,5 +18,5 @@ def searchTitle(title, is_seasonal, status):
     add_entry_csv("Anime register", newEntry)
     req.cookies.clear()
 
-show_csv_content("Anime register")
+# show_csv_content("Anime register")
 
