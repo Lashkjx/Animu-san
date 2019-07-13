@@ -1,5 +1,6 @@
 import gspread as gs
 from oauth2client.service_account import ServiceAccountCredentials as sac
+from UI.MyAnimeList import *
 
 # Variables.
 scope = ['https://www.googleapis.com/auth/drive']
@@ -40,23 +41,67 @@ def getLastEntry(sheet):
 def setLastEntry(sheet, entry):
     sheet.update_cell(3,1,entry)
 
+def getAnimeDataList(sheet, title, isCustom):
+    data = True
+    animeList = []
+    animeDataList = []
+    i = 2
+    while data:
+        if title in sheet.cell(i, 1).value:
+            animeList = [sheet.cell(i, 1).value, i]
+            animeDataList.append(animeList)
+        elif sheet.cell(i, 1).value == '':
+            if len(animeDataList) == 0:
+                title = input("\n[Animu-san] Ara ara, I didn\'t understand. Can you repeat it?\n[Kanna-chan] ")
+                i = 2
+            else:
+                data = False
+        i += 1
+    if len(animeDataList) != 1:
+        for j in range(0,len(animeDataList)):
+            print("[" + str(j) + "] " + (animeDataList[j])[0])
+        try:
+            index = input('\n[Animu-san] Ara ara, which of those you\'re refering to?\n[Kanna-chan] ')
+            animeDataList[int(index)]
+        except IndexError:
+            print('[Animu-san] Ara ara, that didn\'t exist! ')
+        getAnimu(sheet, (animeDataList[int(index)])[1], isCustom)
+    elif len(animeDataList) == 1:
+        getAnimu(sheet, (animeDataList[0])[1], isCustom)
+    else:
+        print("[Animu-san] Ara ara, I didn\'t understand. Can you repeat it?\n[Kanna-chan] ")
+
+def getAnimu(sheet, title, isCustom):
+    data = True
+    animeData = []
+    i = 2
+    if isCustom:
+        for j in range(1, 6):
+            animeData.append(sheet.cell(title, j).value)
+    else:
+        if title in sheet.cell(i, 2).value:
+            for j in range(3,6):
+                animeData.append(sheet.cell(title, j).value)
+    print(animeData)
+
 def getAnimeData(sheet, title, isCustom):
     data = True
     animeData = []
     i = 2
     if isCustom:
         while data:
-            if sheet.cell(i, 1).value == title:
-                for j in range(2, 4):
+            if title in sheet.cell(i, 1).value:
+                for j in range(1, 6):
                     animeData.append(sheet.cell(i, j).value)
                 return animeData
+
                 break
-            elif (sheet.cell(i, 2).value == ''):
+            elif (sheet.cell(i, 1).value == ''):
                 data = False
             i += 1
     else:
         while data:
-            if sheet.cell(i, 2).value == title:
+            if title in sheet.cell(i, 2).value:
                 for j in range(3,6):
                     animeData.append(sheet.cell(i, j).value)
                 return animeData
@@ -64,7 +109,7 @@ def getAnimeData(sheet, title, isCustom):
             elif(sheet.cell(i,2).value == ''):
                 data = False
             i += 1
-
+    print("[Animu-san] Ara ara, I didn\'t understand. Can you repeat it?")
 
 
 def addEntry(sheet, entryData):
@@ -72,11 +117,4 @@ def addEntry(sheet, entryData):
         emptyRow = sheet.cell(2, 12).value
         for data in range (0, len(entryData[0])):
             sheet.update_cell(emptyRow, data + 1, str(entryData[entry][data]))
-    input("\n       - Thank you! For using me Kanan-chan! -")
-
-
-
-
-
-
-
+    input("\n[Animu-san] Ara ara, I updated your spreadsheet Kanan-chan!")

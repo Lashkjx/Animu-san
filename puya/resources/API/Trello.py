@@ -3,6 +3,7 @@ import json
 import os
 import configparser
 from pages.Spreadsheet import *
+from resources.CSV.CSV import *
 
 
 def moveToTrash(key, token, shortLink):
@@ -72,16 +73,15 @@ def addCustomFields(shortLink, key, token, episode, time, type, status, seasonal
     if resp.status_code != 200:
         print('[Error] Status error: {}'.format(resp.status_code))
 
-    # [Checkbox] Seasonal:
-    task = {"value": {"checked": seasonal}}
-    customField = '5cfc00e164a4975195f74fc4'
-    resp = requests.put ('https://api.trello.com/1/cards/{}/customField/{}/item/?key={}&token={}'
-                         .format(shortLink, customField, key, token), json=task)
+    if "FALSE" not in seasonal:
+        # [Checkbox] Seasonal:
+        task = {"value": {"checked": seasonal}}
+        customField = '5cfc00e164a4975195f74fc4'
+        resp = requests.put ('https://api.trello.com/1/cards/{}/customField/{}/item/?key={}&token={}'
+                             .format(shortLink, customField, key, token), json=task)
 
-    if resp.status_code != 200:
-        print('[Error] Seasonal error: {}'.format(resp.status_code))
-    else:
-        print("Finished!")
+        if resp.status_code != 200:
+            print('[Error] Seasonal error: {}'.format(resp.status_code))
 
 def getCards(key, token):
     list = '5cf41ba7fab15d6885a771d7'
@@ -134,38 +134,43 @@ def getCards(key, token):
             moveToTrash(key, token, shortLink)
     return cards
 
-def addCustomCardSeries(title, episodes, isSeasonal):
+def addCustomCardSeries(title, episodes):
     cred = getCredentials()
     sheet = initializeAnimuTan()
-    animeData = getAnimeData(sheet, title, True)
-    for ep in range(1,episodes + 1):
-        id = addNewCard(cred[0], cred[1], title)
-        addCustomFields(id, cred[0], cred[1], str(ep), animeData[0], animeData[1], "Watching", isSeasonal)
+    animeData = retrieve_data_csv('Anime register', title.lower())[0]
+    for ep in range(1, int(episodes) + 1):
+        print("[Animu-san] Ara ara, I uploaded a card for: " + animeData[0] + " - " + str(ep))
+        id = addNewCard(cred[0], cred[1], animeData[0])
+        addCustomFields(id, cred[0], cred[1], str(ep), animeData[1], animeData[2], animeData[4], animeData[3])
+    input("[Animu-san] Ara ara, I finish uploading your series...")
 
-def addCustomCardEpisodes(title, first, last, isSeasonal):
+def addCustomCardEpisodes(title, first, last):
     cred = getCredentials()
     sheet = initializeAnimuTan()
-    animeData = getAnimeData(sheet, title, True)
-    for ep in range(first,last + 1):
-        id = addNewCard(cred[0], cred[1], title)
-        addCustomFields(id, cred[0], cred[1], str(ep), animeData[0], animeData[1], "Watching", isSeasonal)
+    animeData = retrieve_data_csv('Anime register', title.lower())[0]
+    for ep in range(int(first), int(last) + 1):
+        print("[Animu-san] Ara ara, I uploaded a card for: " + animeData[0] + " - " + str(ep))
+        id = addNewCard(cred[0], cred[1], animeData[0])
+        addCustomFields(id, cred[0], cred[1], str(ep), animeData[1], animeData[2], animeData[4], animeData[3])
+    input("[Animu-san] Ara ara, I finish uploading your cards...")
 
-def addCustomCardsEpisode(title, episode, isSeasonal):
+def addCustomCardsEpisode(title, episode, status, seasonal):
     cred = getCredentials()
     sheet = initializeAnimuTan()
-    animeData = getAnimeData(sheet, title, True)
-    id = addNewCard(cred[0], cred[1], title)
-    addCustomFields(id, cred[0], cred[1], str(episode), animeData[0], animeData[1], "Watching", isSeasonal)
+    animeData = retrieve_data_csv('Anime register', title.lower())[0]
+    print("[Animu-san] Ara ara, I uploaded a card for: " + animeData[0] + " - " + episode)
+    id = addNewCard(cred[0], cred[1], animeData[0])
+    if status == '':
+        status = animeData[4]
+    addCustomFields(id, cred[0], cred[1], episode, animeData[1], animeData[2], status, animeData[3])
+    input("[Animu-san] Ara ara, I finish uploading your card...")
 
-
-# addCustomCards('Skirt no Naka wa Kedamono Deshita', 10, 'false')
-# addCustomCardsEpisode('Miru Tights', 5, 'false')
-
-cred = getCredentials()
-cards = getCards(cred[0], cred[1])
-driver = initializeAnimuChan()
-addEntry(driver, cards)
-
-# cred = getCredentials()
-# test(cred[0], cred[1])
+# def findPatterna():
+#     cred = getCredentials()
+#     sheet = initializeAnimuTan()
+#     title = input('[Animu-san] Please give me the title: ')
+#     print('')
+#     animeData = getAnimeDataList(sheet, title, False)
+#
+# findPatterna()
 

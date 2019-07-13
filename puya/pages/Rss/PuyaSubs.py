@@ -18,7 +18,6 @@ def puyaRSS(anime, stop):
         if entry.title != stop:
             if (anime in entry.title) & ('720p' in entry.title):
                 magnetPrefix = "magnet:?xt=urn:btih:"
-                print("Ara ara, I found a little gift for you: " + entry.title)
                 os.startfile(magnetPrefix + entry.nyaa_infohash)
                 pattern = "\d\d"
                 reEpisode = re.findall(pattern, entry.title)
@@ -26,10 +25,11 @@ def puyaRSS(anime, stop):
                     episode = str(reEpisode[0])[1]
                 else:
                     episode = str(reEpisode[0])
+                print("[Animu-san] Ara ara, I found a little gift for you: " + anime + " - " + episode)
                 addTrelloCard(anime, episode)
                 break
         else:
-            sadNotification = "Sorry Kanan-chan, no match today for: " + anime
+            sadNotification = "[Animu-san] Sorry Kanan-chan, no match today for: " + anime
             print(sadNotification)
             break
     return PuyaSubs.entries[0].title
