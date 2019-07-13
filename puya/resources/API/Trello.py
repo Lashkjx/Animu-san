@@ -144,22 +144,20 @@ def addCustomCardSeries(title, episodes):
         addCustomFields(id, cred[0], cred[1], str(ep), animeData[1], animeData[2], animeData[4], animeData[3])
     input("[Animu-san] Ara ara, I finish uploading your series...")
 
-def addCustomCardEpisodes(title, first, last, status, seasonal):
+def addCustomCardEpisodes(title, first, last):
     cred = getCredentials()
     sheet = initializeAnimuTan()
-    animeData = getAnimeData(sheet, title, True)
+    animeData = retrieve_data_csv('Anime register', title.lower())[0]
     for ep in range(int(first), int(last) + 1):
         print("[Animu-san] Ara ara, I uploaded a card for: " + animeData[0] + " - " + str(ep))
         id = addNewCard(cred[0], cred[1], animeData[0])
-        if status == '':
-            status = animeData[4]
-        addCustomFields(id, cred[0], cred[1], str(ep), animeData[1], animeData[2], status, animeData[3])
+        addCustomFields(id, cred[0], cred[1], str(ep), animeData[1], animeData[2], animeData[4], animeData[3])
     input("[Animu-san] Ara ara, I finish uploading your cards...")
 
 def addCustomCardsEpisode(title, episode, status, seasonal):
     cred = getCredentials()
     sheet = initializeAnimuTan()
-    animeData = getAnimeData(sheet, title, True)
+    animeData = retrieve_data_csv('Anime register', title.lower())[0]
     print("[Animu-san] Ara ara, I uploaded a card for: " + animeData[0] + " - " + episode)
     id = addNewCard(cred[0], cred[1], animeData[0])
     if status == '':

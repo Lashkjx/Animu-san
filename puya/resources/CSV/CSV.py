@@ -19,7 +19,7 @@ def show_csv_content(file):
 
 def add_entry_csv(file, data):
     csv_name = file + ".csv"
-    with open(path + csv_name, 'a', newline='') as csv_file:
+    with open(path + csv_name, 'a+', newline='') as csv_file:
         csv_append = csv.writer(csv_file)
         csv_append.writerow(data)
     csv_file.close()
@@ -45,5 +45,7 @@ def retrieve_data_csv(file, name):
             print('[Animu-san] Ara ara, that didn\'t exist! ')
     else:
         return animeDataList
+    csv_file.close()
 
-# retrieve_data_csv('Anime register', 'idolm@ster')
+
+# add_entry_csv('Anime register', 'Bakuon!!')
